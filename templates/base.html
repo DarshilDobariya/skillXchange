@@ -1,0 +1,18 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SkillXchange{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    {% block content %}
+    <h1>Welcome to SkillXchange!</h1>
+    <a href="{% url 'signup' %}">Sign Up</a> |
+    <a href="{% url 'login' %}">Log In</a>
+    {% endblock %}
+</body>
+</html>
