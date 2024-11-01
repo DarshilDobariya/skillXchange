@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3>Search Results for "{{ query }}":</h3>
+    
+    {% if customers %}
+        <ul class="list-group">
+            {% for customer in customers %}
+                <li class="list-group-item">
+                    <strong>{{ customer.first_name }} {{ customer.last_name }}</strong>
+                    <p>Phone: {{ customer.phone }}</p>
+                    <p>Email: {{ customer.email }}</p>
+                    <p>Skills: 
+                        {% for skill in customer.skills.all %}
+                            <span class="badge bg-info">{{ skill.name }}</span>
+                        {% endfor %}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No results found for your search.</p>
+    {% endif %}
+</div>
+{% endblock %}
