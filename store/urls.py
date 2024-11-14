@@ -6,6 +6,7 @@ from .views.login import Login , logout
 from .views.profile import Profile1
 from .middlewares.auth import  auth_middleware
 from .views.search import search_customers
+from .views.chat import chat_view
 
 urlpatterns = [
     path('', Index.as_view(), name='homepage'),
@@ -25,4 +26,5 @@ urlpatterns = [
     path('accept_request/<int:request_id>/', Profile1.accept_request, name='accept_request'),
     path('reject_request/<int:request_id>/', Profile1.reject_request, name='reject_request'),
     path('notifications/', Profile1.notifications_page, name='notifications_page'),
+     path('chat/<int:chat_id>/', chat_view, name='chat_view'),
 ]

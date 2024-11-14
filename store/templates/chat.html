@@ -1,0 +1,16 @@
+# chat.html (template)
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Chat Room: {{ chat.name }}</h2>
+  <div class="chat-window">
+      {% for message in messages %}
+          <p><strong>{{ message.user.username }}</strong>: {{ message.message }}</p>
+      {% endfor %}
+  </div>
+  <form method="post">
+      {% csrf_token %}
+      <input type="text" name="message" placeholder="Type your message here..." class="form-control" required>
+      <button type="submit" class="btn btn-primary">Send</button>
+  </form>
+{% endblock %}
