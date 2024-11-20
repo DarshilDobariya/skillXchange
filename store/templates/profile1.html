@@ -1,63 +1,10 @@
 {% extends 'base.html' %}
 
-{% block style %}
-<style>
-	/* The snackbar - position it at the bottom and in the middle of the screen */
-	#snackbar {
-		visibility: hidden; /* Hidden by default. Visible on click */
-		min-width: 250px; /* Set a default minimum width */
-		margin-left: -125px; /* Divide value of min-width by 2 */
-		background-color: #333; /* Black background color */
-		color: #fff; /* White text color */
-		font-weight: 700;
-		text-align: center; /* Centered text */
-		border-radius: 15px; /* Rounded borders */
-		padding: 16px; /* Padding */
-		position: fixed; /* Sit on top of the screen */
-		z-index: 1; /* Add a z-index if needed */
-		left: 48%; /* Center the snackbar */
-		bottom: 30px; /* 30px from the bottom */
-	}
-
-	/* Show the snackbar when clicking on a button (class added with JavaScript) */
-	#snackbar.show {
-		visibility: visible; /* Show the snackbar */
-		/* Add animation: Take 0.5 seconds to fade in and out the snackbar.
-		However, delay the fade out process for 2.5 seconds */
-		-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-		animation: fadein 0.5s, fadeout 0.5s 2.5s;
-	}
-
-	/* Animations to fade the snackbar in and out */
-	@-webkit-keyframes fadein {
-		from {bottom: 0; opacity: 0;}
-		to {bottom: 30px; opacity: 1;}
-	}
-
-	@keyframes fadein {
-		from {bottom: 0; opacity: 0;}
-		to {bottom: 30px; opacity: 1;}
-	}
-
-	@-webkit-keyframes fadeout {
-		from {bottom: 30px; opacity: 1;}
-		to {bottom: 0; opacity: 0;}
-	}
-
-	@keyframes fadeout {
-		from {bottom: 30px; opacity: 1;}
-		to {bottom: 0; opacity: 0;}
-	}
-</style>
-{% endblock %}
 {% block content %}
-{% load static %}
-{% load cart %}
+
 {% load custom_filter %}
-
 <!-- body -->
-
-		<section style="background-color: #eee;">
+		<section style="background-color: #eee; height: 85vh;">
 			<div class="container py-5">
 			  <!-- <div class="row">
 				<div class="col">
@@ -72,33 +19,27 @@
 			  </div> -->
 		  
 			  <div class="row">
-				<div class="col-lg-4">
+				<div class="col-lg-4">					
 				  <div class="card mb-4">
-					<div class="card-body text-center">	
-					  <img src="{{ customer.image.url }}" alt="avatar"
-						class="rounded-circle img-fluid" style="width: 150px;">
-					  <h5 class="my-3">{{ customer.first_name }} {{ customer.last_name }}</h5>
-					  <p class="text-muted mb-1">{{ customer.position }}</p>
-					  <!-- <p class="text-muted mb-4">Bay Area, San Francisco, CA</p> -->
-					  <!-- <div class="d-flex justify-content-center mb-2">
-						<button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary mx-2">Follow</button>
-						<button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Message</button>
-					  </div> -->
+					<div class="card-body text-center">
+						<img src="{{ customer.image.url }}" alt="avatar"
+							class="rounded-circle img-fluid" style="width: 150px;">
+						<h5 class="my-3">{{ customer.first_name }} {{ customer.last_name }}</h5>
+						<p class="text-muted mb-1">{{ customer.position }}</p>
+						<!-- <p class="text-muted mb-4">Bay Area, San Francisco, CA</p> -->
+						<!-- <div class="d-flex justify-content-center mb-2">
+							<button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary mx-2">Follow</button>
+							<button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Message</button>
+						</div> -->
 					</div>
 				  </div>
-				  <div class="card mb-4">
-					<div class="card-body text-center">	
-					  <i class="fas fa-coins credit-icon" style="font-size: 45px;"></i> 
-					  <h3 class="my-1">{{ customer.credit }}</h3>
-					  <p class="text-muted mb-1">Available Credits</p>
-					  <a href="#" class="btn btn-outline-primary rounded" data-bs-toggle="modal" data-bs-target="#creditsModal">Send Credits  <i class="fas fa-paper-plane ml-1" aria-hidden="true"></i></a>
-					</div>
-				  </div>
+				  {% if is_connected %}
 				  <div class="card mb-4 mb-lg-0">
 					<div class="card-body p-0">
-						<p class="py-3 px-3"> <b>Social Links</b> <a href="#" class="ml-2 float-right rounded-circle" data-bs-toggle="modal" data-bs-target="#skillsModal1"><span class="text-primary font-italic me-1"><span class="icon-circle">
+						<p class="py-3 px-3"> <b>Social Links</b>
+							 <!-- <a href="#" class="ml-2 float-right rounded-circle" data-bs-toggle="modal" data-bs-target="#skillsModal1"><span class="text-primary font-italic me-1"><span class="icon-circle">
 							<i class="fas fa-pen"></i>
-						</span></span> </a>
+						</span></span> </a> -->
 						  </p>
 					  <ul class="list-group list-group-flush rounded-3">
 						<!-- <li class="list-group-item d-flex justify-content-between align-items-center p-3">
@@ -124,7 +65,9 @@
 					  </ul>
 					</div>
 				  </div>
+				  {% endif %}
 				</div>
+				
 				<div class="col-lg-8">
 				  <div class="card mb-4">
 					<div class="card-body">
@@ -147,24 +90,7 @@
 						</div>
 					  </div>
 					  <hr>
-					  <div class="row">
-						<div class="col-sm-3">
-						  <p class="mb-0"><b>Phone</b></p>
-						</div>
-						<div class="col-sm-9">
-						  <p class="text-muted mb-0">{{ customer.phone }}</p>
-						</div>
-					  </div>
-					 
-					  <!-- <div class="row">
-						<div class="col-sm-3">
-						  <p class="mb-0">Mobile</p>
-						</div>
-						<div class="col-sm-9">
-						  <p class="text-muted mb-0">(098) 765-4321</p>
-						</div>
-					  </div> -->
-					  <hr>
+					  
 					  <div class="row">
 						<div class="col-sm-3">
 						  <p class="mb-0"><b>Position</b></p>
@@ -173,7 +99,18 @@
 						  <p class="text-muted mb-0">{{ customer.position }}</p>
 						</div>
 					  </div>
+					  
+					  {% if is_connected %}
 					  <hr>
+					  <div class="row">
+						<div class="col-sm-3">
+						  <p class="mb-0"><b>Phone</b></p>
+						</div>
+						<div class="col-sm-9">
+						  <p class="text-muted mb-0">{{ customer.phone }}</p>
+						</div>
+					  </div>
+					  <hr>	 
 					  <div class="row">
 						<div class="col-sm-3">
 						  <p class="mb-0"><b>Address</b></p>
@@ -182,20 +119,24 @@
 						  <p class="text-muted mb-0">{{ customer.address }}</p>
 						</div>
 					  </div>
+					  {% endif %}
 					</div>
 				  </div>
+				 
 				  <div class="row">
 					<div class="col-md-12">
 					  <div class="card mb-4 mb-md-0">
 						<div class="card-body">
-						  <p class="mb-4"> <b>Skills</b> <a href="#" class="ml-2 float-right rounded-circle" data-bs-toggle="modal" data-bs-target="#skillsModal"><span class="text-primary font-italic me-1"><span class="icon-circle">
+						  <p class="mb-4"> <b>Skills</b> 
+							<!-- <a href="#" class="ml-2 float-right rounded-circle" data-bs-toggle="modal" data-bs-target="#skillsModal"><span class="text-primary font-italic me-1"><span class="icon-circle">
 							<i class="fas fa-pen"></i>
-						</span></span> </a>
+						</span></span> </a> -->
 						  </p>
 						  {% for skill in skills %}
 						  <!-- <p class="mb-1" style="font-size: .77rem;">{{ skill}}</p> -->
 						  	<span class="badge bg-primary text-white py-2 px-3" style="font-size: 1rem; border-radius: 50px;">{{ skill}}</span>
 					  	  {% endfor %}
+							
 						  <!-- <p class="mb-1" style="font-size: .77rem;">Web Design</p>
 						  <div class="progress rounded" style="height: 5px;">
 							<div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
@@ -224,54 +165,7 @@
 						</div>
 					  </div>
 					</div>
-					<div class="col-md-12 mt-3">
-						<div class="card mb-4 mb-md-0">
-						  <div class="card-body">
-							<p class="mb-4"> <b>Identity Proof</b> <a href="#" class="ml-2 float-right rounded-circle" data-bs-toggle="modal" data-bs-target="#skillsModal"><span class="text-primary font-italic me-1"><span class="icon-circle">
-								<i class="fas fa-pen"></i>
-							</span></span> </a>
-							  </p>
-							  <hr>
-							  
-							  <div class="row">
-									<div class="col-sm-6">
-									<p class="mb-0"><b>Government ID Number (i.e. License)</b></p>
-									</div>
-									{% if license_image %}
-										<div class="col-sm-6">
-											<p class="text-muted mb-0">{{ customer.license_number }}</p>
-										</div>
-									{% else %}
-										<div class="col-sm-6">
-											<p class="text-muted mb-0">None</p>
-										</div>
-									{% endif %}
-							  </div>
-							  <hr>
-							  {% if license_image %}
-							  <div class="row">
-								<div class="col-sm-6">
-								  <p class="mb-0"><b>Government ID Image (i.e. License)</b></p>
-								</div>
-								<div class="col-sm-6">
-								   <img src="{{ customer.license_image.url }}" alt="license_image"
-								   class="rounded img-fluid" style="width: 200px;">
-								</div>
-							  </div>
-							 {% else %}
-							 <div class="row">
-								<div class="col-sm-6">
-								  <p class="mb-0"><b>Government ID Image (i.e. License)</b></p>
-								</div>
-								<div class="col-sm-6">
-								   <img src="{% static '/logo/license.jpg' %}" alt="license_image"
-								   class="rounded img-fluid" style="width: 200px;">
-								</div>
-							  </div>
-							 {% endif %}
-						  </div>
-						</div>
-					  </div>
+					
 					<!-- <div class="col-md-6">
 					  <div class="card mb-4 mb-md-0">
 						<div class="card-body">
@@ -307,8 +201,41 @@
 					</div> -->
 				  </div>
 				</div>
-			  </div>
 			</div>
+			{% if is_connected %}
+				{% else %}
+					{% if connection_request %}
+						{% if connection_request.status == "sent" %}
+							<form action="{% url 'withdraw_request' connection_request.id %}" method="post">
+								{% csrf_token %}
+								<button class="btn btn-danger float-right ml-2 my-2 mb-2">Withdraw</button>
+							</form>
+						{% elif connection_request.status == "withdrawn" %}
+							<form action="{% url 'send_request' customer.id %}" method="post">
+								{% csrf_token %}
+								<button class="btn btn-primary float-right ml-2 my-2 mb-2">Connect</button>
+							</form>
+						{% elif connection_request.status == "accepted" %}
+							<p class="btn btn-warning ml-2 float-right my-2 mb-2">Connected</p>
+						{% elif connection_request.status == "rejected" %}
+							<p class="btn btn-warning ml-2 float-right my-2 mb-2">Request Rejected</p>
+						{% endif %}
+					{% else %}
+						<form action="{% url 'send_request' customer.id %}" method="post">
+							{% csrf_token %}
+							<button class="btn btn-primary ml-2 float-right my-2 mb-2">Connect</button>
+						</form>
+					{% endif %}
+					<!-- {% if is_request_sent %}
+						<a href="{% url 'withdraw_request' connection_request.id %}" class="btn btn-danger float-right">Withdraw</a>
+					{% else %}
+						<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3 mb-2">
+							<h5>Please connect to view full profile.</h5>
+							<a href="{% url 'send_request' customer.id %}" class="btn btn-primary float-right">Connect</a>
+						</div> -->
+					<!-- {% endif %} -->
+				{% endif %}
+				<a href="#" class="btn btn-primary ml-2 float-right my-2 mb-2" onclick="goBack()">Back</a>
 		  </section>
 		
 
@@ -337,35 +264,6 @@
 			</div>
 		</div>
 
-		<div id="snackbar"></div>
-
-		<div class="modal fade" id="creditsModal" tabindex="-1" aria-labelledby="creditsModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="creditsModalLabel">Send Credits</h5>
-					</div>
-					<div class="modal-body">
-						<!-- Input to add new skill -->
-						<label><b>Enter an Email Address of Connection</b></label> 
-						<div class="input-group mb-3">
-							<input type="text" id="emailInput" class="form-control" placeholder="Enter Email Address">
-						</div>
-
-						<label><b>Enter Credits you want to send</b></label> 
-						<div class="input-group mb-3">
-							<input type="number" id="creditInput" class="form-control" placeholder="Enter Credits">
-						</div>
-						<!-- Area to display added skills as tags -->
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<!-- Save skills button -->
-						<button type="button" class="btn btn-primary" id="sendCreditButton">Send</button>
-					</div>
-				</div>
-			</div>
-		</div>
 	
 
 		<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
@@ -382,7 +280,7 @@
 				</div>
 			  </div>
 			</div>
-		</div>
+		  </div>
 
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
@@ -456,24 +354,24 @@
 				});
 			}
 		
+
 			function saveSkills() {
 				fetch('/profile', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-CSRFToken': '{{ csrf_token }}'  // Django's CSRF token for security
-					},
-					body: JSON.stringify({ skills: skills })
-					})
-					.then(response => response.json())
-					.then(data => {
-					if (data.status === 'success') {
-						$('#skillsModal').modal('hide');
-						// $('#successModal').modal('show');
-						window.location.reload();
-					} else {
-						alert("Error saving skills. Please try again.");
-					}
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': '{{ csrf_token }}'  // Django's CSRF token for security
+				},
+				body: JSON.stringify({ skills: skills })
+				})
+				.then(response => response.json())
+				.then(data => {
+				if (data.status === 'success') {
+					$('#skillsModal').modal('hide');
+					$('#successModal').modal('show');
+				} else {
+					alert("Error saving skills. Please try again.");
+				}
 				})
 				.catch(error => console.error("Error:", error));
 			}
@@ -481,67 +379,10 @@
 			document.getElementById("reloadButton").addEventListener("click", function() {
 				location.reload();
 			});
-
-			// function sendCredits() {
-
-			// 	fetch('/profile', {
-			// 		method: 'POST',
-			// 		headers: {
-			// 			'Content-Type': 'application/json',
-			// 			'X-CSRFToken': '{{ csrf_token }}'  // Django's CSRF token for security
-			// 		},
-			// 		body: JSON.stringify({ skills: skills })
-			// 		})
-			// 		.then(response => response.json())
-			// 		.then(data => {
-			// 		if (data.status === 'success') {
-			// 			$('#skillsModal').modal('hide');
-			// 			// $('#successModal').modal('show');
-			// 			window.location.reload();
-			// 		} else {
-			// 			alert("Error saving skills. Please try again.");
-			// 		}
-			// 		})
-			// 		.catch(error => console.error("Error:", error));
-			// }
-
-			document.getElementById("reloadButton").addEventListener("click", function() {
-				location.reload();
-			});
 		</script>
-
 		<script>
-			document.getElementById('sendCreditButton').addEventListener('click', async () => {
-				const email = document.getElementById('emailInput').value;
-				const credit = document.getElementById('creditInput').value;
-
-				const csrfToken = '{{ csrf_token }}'; // Pass CSRF token from Django template
-
-				const response = await fetch("{% url 'send_credit' %}", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						"X-CSRFToken": csrfToken // CSRF token for protection
-					},
-					body: JSON.stringify({
-						email: email,
-						credit: credit
-					})
-				});
-
-				var snackbar = document.getElementById('snackbar');
-				const result = await response.json();
-				if (response.ok) {
-					snackbar.innerHTML = result.message;
-					snackbar.className = "show";
-					console.log(result.message);
-					$('#creditsModal').modal('hide');
-				} else {
-					snackbar.innerHTML = result.error;
-					snackbar.className = "show";
-					$('#creditsModal').modal('hide');
-				}
-				setTimeout(function(){ window.location.reload(); }, 2500);
-			});
-		</script>
-{% endblock %}
+			function goBack() {
+			  window.history.back();
+			}
+		  </script>
+	{% endblock %}
