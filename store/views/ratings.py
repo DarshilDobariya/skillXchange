@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect,get_object_or_404
-from store.models.product import Products
+# from store.models.product import Products
 # from store.models.category import Category
 from store.models.connection import ConnectionRequest
 from store.models.notifications import Notification

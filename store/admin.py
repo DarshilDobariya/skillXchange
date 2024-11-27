@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models.customer import Customer
-from .models.orders import Order
+# from .models.orders import Order
 from .models.connection import ConnectionRequest
 from .models.notifications import Notification
 from .models.chat import Message
