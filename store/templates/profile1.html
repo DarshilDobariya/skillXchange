@@ -1,10 +1,80 @@
 {% extends 'base.html' %}
+{% load custom_filter %}
+{% block style %}
+	<style>
+		.btn-grey{
+			background-color:#D8D8D8;
+			color:#FFF;
+		}
+		.rating-block{
+			background-color:#fff;
+			border:1px solid rgba(0, 0, 0, 0.175);
+			padding:15px 15px 20px 15px;
+			border-radius:3px;
+		}
+		.bold{
+			font-weight:700;
+		}
+		.padding-bottom-7{
+			padding-bottom:7px;
+		}
 
+		.review-block{
+			background-color:#FAFAFA;
+			border:1px solid #EFEFEF;
+			padding:15px;
+			border-radius:3px;
+			margin-bottom:15px;
+		}
+		.review-block-name{
+			font-size:12px;
+			margin:10px 0;
+		}
+		.review-block-date{
+			font-size:12px;
+		}
+		.review-block-rate{
+			font-size:13px;
+			margin-bottom:15px;
+		}
+		.review-block-title{
+			font-size:15px;
+			font-weight:700;
+			margin-bottom:10px;
+		}
+		.review-block-description{
+			font-size:13px;
+		}
+		.pull-right {
+			float: right !important;
+		}
+
+		.pull-left{
+			float:left !important;
+		}
+
+		.progress{
+			background-color: #f5f5f5;
+		}
+		.progress-bar-success {
+			background-color: #5cb85c;
+		}
+		.progress-bar-info {
+			background-color: #5bc0de;
+		}
+		.progress-bar-warning {
+			background-color: #f0ad4e;
+		}
+		.progress-bar-danger {
+			background-color: #d9534f;
+		}
+	</style>
+{% endblock %}
 {% block content %}
 
 {% load custom_filter %}
 <!-- body -->
-		<section style="background-color: #eee; height: 85vh;">
+		<section style="background-color: #eee; height: auto;">
 			<div class="container py-5">
 			  <!-- <div class="row">
 				<div class="col">
@@ -101,8 +171,8 @@
 					  </div>
 					  
 					  {% if is_connected %}
-					  <hr>
-					  <div class="row">
+					  <!-- <hr> -->
+					  <!-- <div class="row">
 						<div class="col-sm-3">
 						  <p class="mb-0"><b>Phone</b></p>
 						</div>
@@ -118,11 +188,111 @@
 						<div class="col-sm-9">
 						  <p class="text-muted mb-0">{{ customer.address }}</p>
 						</div>
-					  </div>
+					  </div> -->
 					  {% endif %}
 					</div>
 				  </div>
 				 
+				  <div class="row mb-4">
+					<div class="col-md-5">
+						<div class="rating-block">
+							<p><b>Average user rating</b></p>
+							<h2 class="bold padding-bottom-7">{{ average_rating }} <small>/ 5</small></h2>
+							{% if average_rating %}
+								{% for star in stars_range %}
+									<button type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
+										<span class="fas fa-star text-white" aria-hidden="true"></span>
+									</button>
+								{% endfor %}
+							{% endif %}
+						</div>
+					</div>
+					<div class="col-md-7">
+						<div class="card">
+							<div class="card-body">
+								<p><b>Rating breakdown</b></p>
+								{% for star, count in star_counts.items %}
+									{% if star == 5 %}
+									<div class="pull-left">
+										<div class="pull-left" style="width:35px; line-height:1;">
+											<div style="height:9px; margin:5px 0;">5 <span class="fas fa-star text-warning"></span></div>
+										</div>
+										<div class="pull-left" style="width:180px;">
+											<div class="progress" style="height:9px; margin:8px 0;">
+											<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="5" style="width: 1000%">
+												<span class="sr-only">80% Complete (danger)</span>
+											</div>
+											</div>
+										</div>
+										<div class="pull-right" style="margin-left:10px;">{{count}}</div>
+									</div>
+									{% endif %}
+									{% if star == 4 %}
+									<div class="pull-left">
+										<div class="pull-left" style="width:35px; line-height:1;">
+											<div style="height:9px; margin:5px 0;">4 <span class="fas fa-star text-warning"></span></div>
+										</div>
+										<div class="pull-left" style="width:180px;">
+											<div class="progress" style="height:9px; margin:8px 0;">
+											  <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="5" style="width: 80%">
+												<span class="sr-only">80% Complete (danger)</span>
+											  </div>
+											</div>
+										</div>
+										<div class="pull-right" style="margin-left:10px;">{{count}}</div>
+									</div>
+									{% endif %}
+									{% if star == 3 %}
+									<div class="pull-left">
+										<div class="pull-left" style="width:35px; line-height:1;">
+											<div style="height:9px; margin:5px 0;">3 <span class="fas fa-star text-warning"></span></div>
+										</div>
+										<div class="pull-left" style="width:180px;">
+											<div class="progress" style="height:9px; margin:8px 0;">
+											  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="3" aria-valuemin="0" aria-valuemax="5" style="width: 60%">
+												<span class="sr-only">80% Complete (danger)</span>
+											  </div>
+											</div>
+										</div>
+										<div class="pull-right" style="margin-left:10px;">{{count}}</div>
+									</div>
+									{% endif %}
+									{% if star == 2 %}
+									<div class="pull-left">
+										<div class="pull-left" style="width:35px; line-height:1;">
+											<div style="height:9px; margin:5px 0;">2 <span class="fas fa-star text-warning"></span></div>
+										</div>
+										<div class="pull-left" style="width:180px;">
+											<div class="progress" style="height:9px; margin:8px 0;">
+											  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="5" style="width: 40%">
+												<span class="sr-only">80% Complete (danger)</span>
+											  </div>
+											</div>
+										</div>
+										<div class="pull-right" style="margin-left:10px;">{{count}}</div>
+									</div>
+									{% endif %}
+									{% if star == 1 %}
+									<div class="pull-left">
+										<div class="pull-left" style="width:35px; line-height:1;">
+											<div style="height:9px; margin:5px 0;">1 <span class="fas fa-star text-warning"></span></div>
+										</div>
+										<div class="pull-left" style="width:180px;">
+											<div class="progress" style="height:9px; margin:8px 0;">
+											  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="5" style="width: 20%">
+												<span class="sr-only">80% Complete (danger)</span>
+											  </div>
+											</div>
+										</div>
+										<div class="pull-right" style="margin-left:10px;">{{count}}</div>
+									</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+					</div>			
+				  </div>		
+
 				  <div class="row">
 					<div class="col-md-12">
 					  <div class="card mb-4 mb-md-0">
@@ -200,6 +370,52 @@
 					  </div>
 					</div> -->
 				  </div>
+
+				  <div class="row">
+					<div class="col-sm-12">
+						<div class="card mt-4">
+							<div class="card-body">
+								<p class="px-3"><b>Reviews</b></p>
+							</div>
+						</div>
+						<div class="review-block">
+							{% if ratings %}
+							{% for rating in ratings %}
+								<div class="row">
+									<div class="col-sm-3">
+										<img src="{{ rating.rater.image.url }}" width="70px" height="70px" class="img-rounded-circle rounded-circle" >
+										<div class="review-block-name">{{ rating.rater.first_name }} {{ rating.rater.last_name }}</div>
+										<!-- <div class="review-block-date">{{ rating.rater.datetime }}</div> -->
+									</div>
+									<div class="col-sm-9">
+										<div class="review-block-rate">
+											{% if  rating.stars %}
+											{% for i in rating.stars|range_filter %}
+												
+													<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
+														<span class="fas fa-star text-white" aria-hidden="true"></span>
+													</button>
+												
+												{% endfor %}
+											{% endif %}
+										</div>
+										<!-- <div class="review-block-title">this was nice in buy</div> -->
+										<div class="review-block-description">{{ rating.comment }}</div>
+									</div>
+								</div>
+								<hr/>
+								{% endfor %}
+								
+							{% else %}
+								<div class="row">
+									<div class="text-center">
+										<p class="text-primary"><b>No reviews found for this profile.</b></p>
+									</div>
+								</div>
+							{% endif %}
+						</div>
+					</div>
+				  </div> 
 				</div>
 			</div>
 			{% if is_connected %}
@@ -217,6 +433,7 @@
 							</form>
 						{% elif connection_request.status == "accepted" %}
 							<p class="btn btn-warning ml-2 float-right my-2 mb-2">Connected</p>
+							
 						{% elif connection_request.status == "rejected" %}
 							<p class="btn btn-warning ml-2 float-right my-2 mb-2">Request Rejected</p>
 						{% endif %}
@@ -235,7 +452,11 @@
 						</div> -->
 					<!-- {% endif %} -->
 				{% endif %}
+				<a class="btn btn-primary float-right ml-2 my-2 mb-2" href="{% url 'chat_window' customer.id %}">Message</a>
 				<a href="#" class="btn btn-primary ml-2 float-right my-2 mb-2" onclick="goBack()">Back</a>
+				<button type="button" class="btn btn-primary float-right my-2 mb-2 ml-2" data-bs-toggle="modal" data-bs-target="#rateCustomerModal">
+					Rate this user
+				</button>
 		  </section>
 		
 
@@ -263,7 +484,6 @@
 				</div>
 			</div>
 		</div>
-
 	
 
 		<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
@@ -280,8 +500,38 @@
 				</div>
 			  </div>
 			</div>
-		  </div>
+		</div>
 
+		<div class="modal fade" id="rateCustomerModal" tabindex="-1" aria-labelledby="rateCustomerModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="rateCustomerModalLabel">Rate Customer</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form id="ratingForm">
+							<div class="mb-3">
+								<label for="stars" class="form-label">Stars</label>
+								<select class="form-select" id="stars" required>
+									<option value="">Select stars</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select>
+							</div>
+							<div class="mb-3">
+								<label for="comment" class="form-label">Write your Review</label>
+								<textarea class="form-control" id="comment" rows="3" placeholder="Write a review"></textarea>
+							</div>
+							<button type="button" class="btn btn-primary" id="submitRating">Submit Rating</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 		<script>
@@ -381,8 +631,50 @@
 			});
 		</script>
 		<script>
+			document.getElementById('submitRating').addEventListener('click', function () {
+				const ratedCustomerId = '{{customer.id}}';
+				const stars = document.getElementById('stars').value;
+				const comment = document.getElementById('comment').value;
+	
+				// Validate form fields
+				if (!ratedCustomerId || !stars) {
+					alert('Please fill out all required fields.');
+					return;
+				}
+	
+				// Prepare the data
+				const data = {
+					rated_customer_id: ratedCustomerId,
+					stars: parseInt(stars, 10),
+					comment: comment
+				};
+	            console.log('we are in ratings')
+				// Send data to the backend
+				fetch('/rate_customer', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRFToken': '{{ csrf_token }}'
+					},
+					body: JSON.stringify(data),
+				})
+					.then(response => response.json())
+					.then(data => {
+						if (data.error) {
+							alert(`Error: ${data.error}`);
+						} else {
+							window.location.reload();
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						// alert('An error occurred while submitting your rating.');
+					});
+			});
+		</script>
+		<script>
 			function goBack() {
 			  window.history.back();
 			}
-		  </script>
+		</script>
 	{% endblock %}

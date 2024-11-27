@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.db.models import Q  # Import Q for complex queries
 from store.models.customer import Customer
-from store.models.connection import ConnectionRequest # type: ignore
+from store.models.connection import ConnectionRequest
 from django.db.models import F
 from django.http import JsonResponse
 import json

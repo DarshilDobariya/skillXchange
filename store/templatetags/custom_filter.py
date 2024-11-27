@@ -12,3 +12,6 @@ def currency(number):
 def multiply(number , number1):
     return number * number1
 
+@register.filter
+def range_filter(value):
+    return range(value)
