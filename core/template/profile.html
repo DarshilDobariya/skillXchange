@@ -1,0 +1,351 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load cart %}
+{% load custom_filter %}
+<!-- body -->
+
+		<section style="background-color: #eee;">
+			<div class="container py-5">
+			  <!-- <div class="row">
+				<div class="col">
+				  <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
+					<ol class="breadcrumb mb-0">
+					  <li class="breadcrumb-item"><a href="#">Home</a></li>
+					  <li class="breadcrumb-item"><a href="#">User</a></li>
+					  <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+					</ol>
+				  </nav>
+				</div>
+			  </div> -->
+		  
+			  <div class="row">
+				<div class="col-lg-4">
+				  <div class="card mb-4">
+				
+					<div class="card-body text-center">
+						
+						<img src="{% if customer.image %}{{ customer.image.url }}{% else %}/static/images/default_avatar.png{% endif %}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+
+					  <h5 class="my-3">{{ customer.first_name }} {{ customer.last_name }}</h5>
+					  <p class="text-muted mb-1">{{ customer.position }}</p>
+					  <!-- <p class="text-muted mb-4">Bay Area, San Francisco, CA</p> -->
+					  <!-- <div class="d-flex justify-content-center mb-2">
+						<button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary mx-2">Follow</button>
+						<button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Message</button>
+					  </div> -->
+					</div>
+				  </div>
+				  <div class="card mb-4 mb-lg-0">
+					<div class="card-body p-0">
+						<p class="py-3 px-3"> <b>Social Links</b> <a href="#" class="ml-2 float-right rounded-circle" data-bs-toggle="modal" data-bs-target="#skillsModal1"><span class="text-primary font-italic me-1"><span class="icon-circle">
+							<i class="fas fa-pen"></i>
+						</span></span> </a>
+						  </p>
+					  <ul class="list-group list-group-flush rounded-3">
+						<!-- <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						  <i class="fas fa-linkedin fa-lg text-warning"></i>
+						  <p class="mb-0">{{ customer.linkedin }}</p>
+						</li> -->
+						<li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						  <i class="fab fa-linkedin fa-lg text-body mr-2" style="color: #0765ad;"></i>
+						  <p class="mb-0">{{ customer.linkedin }}</p>
+						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						  <i class="fab fa-twitter fa-lg mr-2" style="color: #55acee;"></i>
+						  <p class="mb-0">{{ customer.twitter }}</p>
+						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						  <i class="fab fa-instagram fa-lg mr-2" style="color: #ac2bac;"></i>
+						  <p class="mb-0">{{ customer.instagram }}</p>
+						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						  <i class="fab fa-facebook-f fa-lg mr-2" style="color: #3b5998;"></i>
+						  <p class="mb-0">{{ customer.facebook }}</p>
+						</li>
+					  </ul>
+					</div>
+				  </div>
+				</div>
+				<div class="col-lg-8">
+				  <div class="card mb-4">
+					<div class="card-body">
+						
+					  <div class="row">
+						<div class="col-sm-3">
+						  <p class="mb-0">Full Name</p>
+						</div>
+						<div class="col-sm-9">
+						  <p class="text-muted mb-0">{{ customer.first_name }} {{ customer.last_name }}</p>
+						</div>
+					  </div>
+					  <hr>
+					  <div class="row">
+						<div class="col-sm-3">
+						  <p class="mb-0">Email</p>
+						</div>
+						<div class="col-sm-9">
+						  <p class="text-muted mb-0">{{ customer.email }}</p>
+						</div>
+					  </div>
+					  <hr>
+					  <div class="row">
+						<div class="col-sm-3">
+						  <p class="mb-0">Phone</p>
+						</div>
+						<div class="col-sm-9">
+						  <p class="text-muted mb-0">{{ customer.phone }}</p>
+						</div>
+					  </div>
+					 
+					  <!-- <div class="row">
+						<div class="col-sm-3">
+						  <p class="mb-0">Mobile</p>
+						</div>
+						<div class="col-sm-9">
+						  <p class="text-muted mb-0">(098) 765-4321</p>
+						</div>
+					  </div> -->
+					  <hr>
+					  <div class="row">
+						<div class="col-sm-3">
+						  <p class="mb-0">Position</p>
+						</div>
+						<div class="col-sm-9">
+						  <p class="text-muted mb-0">{{ customer.position }}</p>
+						</div>
+					  </div>
+					  <hr>
+					  <div class="row">
+						<div class="col-sm-3">
+						  <p class="mb-0">Address</p>
+						</div>
+						<div class="col-sm-9">
+						  <p class="text-muted mb-0">{{ customer.address }}</p>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				  <div class="row">
+					<div class="col-md-12">
+					  <div class="card mb-4 mb-md-0">
+						<div class="card-body">
+						  <p class="mb-4"> <b>Skills</b> <a href="#" class="ml-2 float-right rounded-circle" data-bs-toggle="modal" data-bs-target="#skillsModal"><span class="text-primary font-italic me-1"><span class="icon-circle">
+							<i class="fas fa-pen"></i>
+						</span></span> </a>
+						  </p>
+						  {% for skill in skills %}
+						  <!-- <p class="mb-1" style="font-size: .77rem;">{{ skill}}</p> -->
+						  	<span class="badge bg-primary text-white py-2 px-3" style="font-size: 1rem; border-radius: 50px;">{{ skill}}</span>
+					  	  {% endfor %}
+						  <!-- <p class="mb-1" style="font-size: .77rem;">Web Design</p>
+						  <div class="progress rounded" style="height: 5px;">
+							<div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
+							  aria-valuemin="0" aria-valuemax="100"></div>
+						  </div>
+						  <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
+						  <div class="progress rounded" style="height: 5px;">
+							<div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
+							  aria-valuemin="0" aria-valuemax="100"></div>
+						  </div>
+						  <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
+						  <div class="progress rounded" style="height: 5px;">
+							<div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
+							  aria-valuemin="0" aria-valuemax="100"></div>
+						  </div>
+						  <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
+						  <div class="progress rounded" style="height: 5px;">
+							<div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
+							  aria-valuemin="0" aria-valuemax="100"></div>
+						  </div>
+						  <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
+						  <div class="progress rounded mb-2" style="height: 5px;">
+							<div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66"
+							  aria-valuemin="0" aria-valuemax="100"></div>
+						  </div> -->
+						</div>
+					  </div>
+					</div>
+					<!-- <div class="col-md-6">
+					  <div class="card mb-4 mb-md-0">
+						<div class="card-body">
+						  <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
+						  </p>
+						  <p class="mb-1" style="font-size: .77rem;">Web Design</p>
+						  <div class="progress rounded" style="height: 5px;">
+							<div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
+							  aria-valuemin="0" aria-valuemax="100"></div>
+						  </div>
+						  <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
+						  <div class="progress rounded" style="height: 5px;">
+							<div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
+							  aria-valuemin="0" aria-valuemax="100"></div>
+						  </div>
+						  <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
+						  <div class="progress rounded" style="height: 5px;">
+							<div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
+							  aria-valuemin="0" aria-valuemax="100"></div>
+						  </div>
+						  <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
+						  <div class="progress rounded" style="height: 5px;">
+							<div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
+							  aria-valuemin="0" aria-valuemax="100"></div>
+						  </div>
+						  <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
+						  <div class="progress rounded mb-2" style="height: 5px;">
+							<div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66"
+							  aria-valuemin="0" aria-valuemax="100"></div>
+						  </div>
+						</div>
+					  </div>
+					</div> -->
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </section>
+		
+
+		<div class="modal fade" id="skillsModal" tabindex="-1" aria-labelledby="skillsModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="skillsModalLabel">Add Skills</h5>
+					</div>
+					<div class="modal-body">
+						<!-- Input to add new skill -->
+						<div class="input-group mb-3">
+							<input type="text" id="skillInput" class="form-control" placeholder="Enter skill">
+							<button class="btn btn-outline-secondary" type="button" onclick="addSkill()">Add</button>
+						</div>
+						<!-- Area to display added skills as tags -->
+						<div id="skillsContainer" class="d-flex flex-wrap gap-2">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<!-- Save skills button -->
+						<button type="button" class="btn btn-primary" onclick="saveSkills()">Save Skills</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	
+
+		<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h5 class="modal-title" id="successModalLabel">Success</h5>
+				</div>
+				<div class="modal-body">
+				  Skills updated successfully!
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-primary" id="reloadButton">OK</button>
+				</div>
+			  </div>
+			</div>
+		  </div>
+
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+		  <script>
+			// Array to store skills
+			let skills = [];
+			fetchSkills();
+			// Function to add a skill
+			function addSkill() {
+				const skillInput = document.getElementById("skillInput");
+				const skill = skillInput.value.trim();
+				
+				if (skill && !skills.includes(skill)) {
+					skills.push(skill);
+					renderSkills();
+					skillInput.value = ""; // Clear input
+				}
+			}
+		
+			// Function to remove a skill
+			function removeSkill(skill) {
+				skills = skills.filter(s => s !== skill);
+				renderSkills();
+			}
+		
+			// function fetchSkills() {
+			// 	fetch('/profile',{
+			// 		method: 'GET',
+			// 	headers: {
+			// 		'Content-Type': 'application/json',
+			// 		'X-CSRFToken': '{{ csrf_token }}'  // Django's CSRF token for security
+			// 	}
+			// 	})
+			// 		.then(response => response.json())
+			// 		.then(data => {
+			// 			    console.log(skills);
+			// 				skillsArray = data.skills; // Store fetched skills
+			// 				// updateSkillsDisplay();
+			// 				const skillsContainer = document.getElementById("skillsContainer");
+			// 	skillsContainer.innerHTML = "";
+			// 				skillsArray.forEach(skill => {
+			// 					const skillTag = document.createElement("span");
+			// 					skillTag.className = "badge bg-primary d-flex align-items-center text-white rounded";
+			// 					skillTag.style.margin = "5px";
+			// 					skillTag.innerHTML = `
+			// 						${skill}
+			// 						<a href="#" class="btn-close btn-close-white rounded-circle mx-2 text-white my-1 text-decoration-none" aria-label="Remove" onclick="removeSkill('${skill}')"> x </a>
+			// 					`;
+			// 					skillsContainer.appendChild(skillTag);
+			// 				});
+								
+			// 		})
+			// 		.catch(error => console.error('Error:', error));
+			// }
+
+
+			// Function to render skills as tags
+			function renderSkills() {
+				const skillsContainer = document.getElementById("skillsContainer");
+				skillsContainer.innerHTML = ""; // Clear existing skills
+		        
+				skills.forEach(skill => {
+					const skillTag = document.createElement("span");
+					skillTag.className = "badge bg-primary d-flex align-items-center text-white rounded";
+					skillTag.style.margin = "5px";
+					skillTag.innerHTML = `
+						${skill}
+						<a href="#" class="btn-close btn-close-white rounded-circle mx-2 text-white my-1 text-decoration-none" aria-label="Remove" onclick="removeSkill('${skill}')"> x </a>
+					`;
+					skillsContainer.appendChild(skillTag);
+				});
+			}
+		
+
+			function saveSkills() {
+				fetch('/profile', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': '{{ csrf_token }}'  // Django's CSRF token for security
+				},
+				body: JSON.stringify({ skills: skills })
+				})
+				.then(response => response.json())
+				.then(data => {
+				if (data.status === 'success') {
+					$('#skillsModal').modal('hide');
+					$('#successModal').modal('show');
+				} else {
+					alert("Error saving skills. Please try again.");
+				}
+				})
+				.catch(error => console.error("Error:", error));
+			}
+
+			document.getElementById("reloadButton").addEventListener("click", function() {
+				location.reload();
+			});
+		</script>
+{% endblock %}

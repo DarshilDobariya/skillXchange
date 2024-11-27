@@ -1,9 +1,6 @@
-<<<<<<< Updated upstream
+
 from  .customer import  Customer
-=======
-# from .product import Products
-# from .category import Category
-# from  .customer import  Customer
-# from  .orders import  Order
+
+
 from  .connection import ConnectionRequest
->>>>>>> Stashed changes
+
