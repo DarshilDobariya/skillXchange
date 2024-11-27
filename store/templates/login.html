@@ -13,10 +13,9 @@
             <hr>
             </div>
             <h3 class="alert alert-light rounded-pill" style="text-align:center" >Login</h3>
-            <form action="/login" method="POST">
+            <form action="/login" method="POST" class="mb-4">
                 
                 {% csrf_token %}
-
                 {% if error%}
                 <div class="alert alert-danger" role="alert">
                     {{error}}
@@ -41,16 +40,15 @@
                 </div>
 
                 <!--Checkme button-->
-            <div class="mb-3 form-check">
+            <!-- <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label d-grid gap-2" for="exampleCheck1">Check me out</label>
-                </div>
+                </div> -->
                 <hr>
                 <button type="submit" class="btn btn-sm btn-success col-lg-12">Login</button>
-
-
-                
             </form>
+            <a href="/signup" class="text-center">Sign up</a><br>
+            <a href="/forgot-password" class="text-center">Forgot Password?</a>
         </div>
     </div>
 </div>
